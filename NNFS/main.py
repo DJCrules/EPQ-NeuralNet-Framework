@@ -8,7 +8,7 @@ a = [np.random.randn(1) for i in range(net.sizes[0])]
 
 image_list = (fetch_image_set(0))
 
-print(cost([1 for j in range(net.sizes[2])], feedforward(net, a)))
+print(quadratic_cost([1 for j in range(net.sizes[2])], feedforward(net, a)))
 
 #multi_graph = multilayered_graph(*net.sizes)
 #show_plt_fig(multi_graph)
