@@ -42,16 +42,3 @@ def excel_bar_graph():
     ax.bar(["Ill", "Not ill"], [findings, no_findings])
     plt.show()
 
-def get_meta_data(set_num):
-    index_range = find_index_range(set_num)
-    a = 0
-    data = []
-    df = pd.read_csv(r"C:\Users\dylan\.cache\kagglehub\datasets\nih-chest-xrays\data\versions\3\Data_Entry_2017.csv")
-    for index, row in df.iterrows():
-        if str(row['Image Index']) == index_range[0]:
-            a = 1
-        if str(row['Image Index']) == index_range[1]:
-            return data
-        if a == 1:
-            data.append(row["Finding Labels"])
-    return data

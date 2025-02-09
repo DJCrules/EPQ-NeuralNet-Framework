@@ -2,13 +2,17 @@ from core import *
 from image_handling import *
 from visuals import *
 
-net = Network([15, 7, 7, 4])
+example = fetch_image_set(0)[0]
 
-a = [np.random.randn(1) for i in range(net.sizes[0])]
+net = Network([len(example), 7, 7, 4])
+single_training_example(net, example)
 
-image_list = (fetch_image_set(0))
+#a = [np.random.randn(1) for i in range(net.sizes[0])]
 
-print(quadratic_cost([1 for j in range(net.sizes[2])], feedforward(net, a)))
+#a = feedforward(net, a)
+
+
+
 
 #multi_graph = multilayered_graph(*net.sizes)
 #show_plt_fig(multi_graph)

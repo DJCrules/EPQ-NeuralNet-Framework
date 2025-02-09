@@ -1,7 +1,10 @@
 import math
 from random import randint
-
+import pandas as pd
 import numpy as np
+
+from image_handling import find_index_range, fetch_image_set
+
 
 class Network(object):
     def __init__(self, sizes):
@@ -35,28 +38,111 @@ def back_propagate(self, activations, learning_rate, answers):
     # take the derivitive of the cost function with respect to the acitvations in the first layer
     # use the chain rule
     # recurse through the network
-    
+
     return self
 
-def gradient_descent(self, fileName, batchsize):
-    # choose dataset
+def gradient_descend(self, batchsize, imageset):
     # find and store the important bits
     # feed the data forward
     # compare the output to the expected output
     # backpropogate the error through the network
     # repeat.
-
+    answers = convert_meta_data(get_meta_data(imageset))
+    batchnumber = (len(answers) / batchsize) + 1
+    images = fetch_image_set(0)
+    #for i in range (0, batchnumber):
+        #for j in range(0, batchsize):
     return self
 
-def find_metadata(set_num, specific = "*"):
-    return set_num
-
-def randomise(arr):
-    for i in range(len(arr) - 1, 0, -1):
-        j = randint(0, i + 1)
-        arr[i], arr[j] = arr[j], arr[i]
-        if j > len(arr):
-            print("randomised")
-    return arr
+def single_training_example(self, image_array):
+    exit_activations = feedforward(self, image_array)
+    
 
 
+def get_meta_data(set_num):
+    index_range = find_index_range(set_num)
+    a = 0
+    data = []
+    df = pd.read_csv(r"C:\Users\dylan\.cache\kagglehub\datasets\nih-chest-xrays\data\versions\3\Data_Entry_2017.csv")
+    for index, row in df.iterrows():
+        if str(row['Image Index']) == index_range[0]:
+            a = 1
+        if str(row['Image Index']) == index_range[1]:
+            return data
+        if a == 1:
+            data.append(row["Finding Labels"])
+    return data
+
+def convert_meta_data(data):
+    #Organisation of metadata:
+    #[Cardiomegaly, Emphysema, Effusion, Hernia, Infiltration, Nodule,
+    #  Mass, Pneumothorax, Pleural_Thickening, Atelectasis, Fibrosis, 
+    #  Consolidation, Edema]
+    converted_data = []
+    i = 0
+    for part in data:
+        converted_data.append([])
+        if 'Cardiomegaly' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Emphysema' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Effusion' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Hernia' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Infiltration' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Nodule' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Mass' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Pneumothorax' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Pleural_Thickening' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Atelectasis' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Fibrosis' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Consolidation' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Edema' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Atelectasis' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'No Finding' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        i+=1
+    return converted_data
+        
+        
