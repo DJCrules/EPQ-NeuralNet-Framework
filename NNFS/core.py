@@ -13,51 +13,54 @@ class Network(object):
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
         self.weights = [np.random.randn(y, x)
                         for x, y in zip(sizes[:-1], sizes[1:])]
+        
+    def gradient_descend_set(self, batchsize, imageset, learning_rate):
+        # find and store the important bits
+        # feed the data forward
+        # compare the output to the expected output
+        # backpropogate the error through the network
+        # repeat.
+        answers = convert_meta_data(get_meta_data(imageset))
+        images = fetch_image_set(imageset)
+        batchnumber = (len(images) // batchsize) + (1 if len(images) % batchsize != 0 else 0)
+        image_batches = np.array([images[i * batchsize : (i + 1) * batchsize] for i in range(batchnumber)])
+        answer_batches = np.array([answers[i * batchsize : (i + 1) * batchsize] for i in range(batchnumber)])
 
-def quadratic_cost(desired_output, network_output):
+        for imgbatch, ansbatch in zip(image_batches, answer_batches):
+            for image, answer in zip(imgbatch, ansbatch):
+                self.back_propagate(image, learning_rate, answer)
+    
+    def feedforward(self, activations):
+        activations = np.array(sigmoid(np.dot(self.weights, activations) + self.biases))
+        return activations
+    
+    def back_propagate(self, activations, learning_rate, answers):
+        # take the derivitive of the cost function with respect to the acitvations in the first layer
+        # use the chain rule
+        # recurse through the network
+
+        return self
+    
+    def apply_changes(self, changed_weights, changed_biases):
+        for i, (changed_weights_layer, changed_biases_layer) in enumerate(zip(changed_weights, changed_biases)):
+            self.weights[i] += changed_weights_layer
+            self.biases[i] += changed_biases_layer
+            
+
+def mse(desired_output, network_output):
     totalSum = 0
     for d_output, n_output in desired_output, network_output:
         totalSum += abs(d_output - n_output) ** 2
     return totalSum / (2 * len(desired_output))
 
-def derivative_quadratic_cost(desired_output, network_output):
+def dev_mse(desired_output, network_output):
     return (network_output - desired_output)
 
 def sigmoid(x):
     return 1/(1 + (math.e ** (-x)))
 
-def sigmoid_derivative(x):
+def dev_sigmoid(x):
     return sigmoid(x) * (1 - sigmoid(x))
-
-def feedforward(self, activations):
-    for bias, weight in zip(self.biases, self.weights):
-        activations = sigmoid(np.dot(weight, activations) + bias)
-    return activations
-
-def back_propagate(self, activations, learning_rate, answers):
-    # take the derivitive of the cost function with respect to the acitvations in the first layer
-    # use the chain rule
-    # recurse through the network
-
-    return self
-
-def gradient_descend(self, batchsize, imageset):
-    # find and store the important bits
-    # feed the data forward
-    # compare the output to the expected output
-    # backpropogate the error through the network
-    # repeat.
-    answers = convert_meta_data(get_meta_data(imageset))
-    batchnumber = (len(answers) / batchsize) + 1
-    images = fetch_image_set(0)
-    #for i in range (0, batchnumber):
-        #for j in range(0, batchsize):
-    return self
-
-def single_training_example(self, image_array):
-    exit_activations = feedforward(self, image_array)
-    
-
 
 def get_meta_data(set_num):
     index_range = find_index_range(set_num)
