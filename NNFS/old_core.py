@@ -1,5 +1,4 @@
 import math
-from random import randint
 import pandas as pd
 import numpy as np
 
@@ -46,7 +45,6 @@ class Network(object):
             self.weights[i] += changed_weights_layer
             self.biases[i] += changed_biases_layer
             
-
 def mse(desired_output, network_output):
     totalSum = 0
     for d_output, n_output in desired_output, network_output:

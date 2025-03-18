@@ -2,6 +2,7 @@ from PIL import Image
 import glob, os
 from random import randint
 import numpy as np
+import pandas as pd
 
 def image_file_conversion(fileName):
     #Take the images from secondary to primary storage
@@ -49,9 +50,6 @@ def find_index_range(set_num):
     images = glob.glob(setvar)
     return os.path.basename(images[0]), os.path.basename(images[len(images) - 1])
 
-def find_metadata(set_num, specific = "*"):
-    return set_num
-
 def randomise(arr):
     for i in range(len(arr) - 1, 0, -1):
         j = randint(0, i + 1)
@@ -59,3 +57,91 @@ def randomise(arr):
         if j > len(arr):
             print("randomised")
     return arr
+
+
+def get_meta_data(set_num):
+    index_range = find_index_range(set_num)
+    a = 0
+    data = []
+    df = pd.read_csv(r"C:\Users\dylan\.cache\kagglehub\datasets\nih-chest-xrays\data\versions\3\Data_Entry_2017.csv")
+    for index, row in df.iterrows():
+        if str(row['Image Index']) == index_range[0]:
+            a = 1
+        if str(row['Image Index']) == index_range[1]:
+            return data
+        if a == 1:
+            data.append(row["Finding Labels"])
+    return data
+
+def convert_meta_data(data):
+    #Organisation of metadata:
+    #[Cardiomegaly, Emphysema, Effusion, Hernia, Infiltration, Nodule,
+    #  Mass, Pneumothorax, Pleural_Thickening, Atelectasis, Fibrosis, 
+    #  Consolidation, Edema]
+    converted_data = []
+    i = 0
+    for part in data:
+        converted_data.append([])
+        if 'Cardiomegaly' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Emphysema' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Effusion' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Hernia' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Infiltration' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Nodule' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Mass' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Pneumothorax' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Pleural_Thickening' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Atelectasis' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Fibrosis' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Consolidation' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Edema' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'Atelectasis' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        if 'No Finding' in part:
+            converted_data[i].append(1)
+        else:
+            converted_data[i].append(0)
+        i+=1
+    return converted_data
+        
