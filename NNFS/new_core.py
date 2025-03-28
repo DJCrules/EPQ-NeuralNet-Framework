@@ -1,6 +1,4 @@
 import numpy as np
-
-from image_handling import find_index_range, fetch_image_set
    
 class Network(object):
     def __init__(self, sizes, error_type, activation_type):
@@ -19,7 +17,6 @@ class Network(object):
     def train_step(self, A, Y, LR):
         N = self.forward(A)
         self.backward(N - Y, LR)
-        return N
     
 class Layer(object):
     def __init__(self, i, j, error, activation):
@@ -83,35 +80,3 @@ class ErrorFunction():
     def rundev(self, A, Y):
         if self.type == 0:
             return (A - Y)
-
-network = Network([2, 3, 1], "MSE", "sigmoid")
-
-X = np.array([[0, 0],
-              [0, 1],
-              [1, 0],
-              [1, 1]])
-
-Y = np.array([[0], [1], [1], [0]])
-
-for epoch in range(0, 500000):
-    x = X[epoch % 4]
-    y = Y[epoch % 4]
-    output = network.forward(x)
-    error = network.errorfunc.run(output, y)
-    network.train_step(x, y, 0.8)
-    if epoch % 100 == 0: 
-        print(f"Epoch {epoch} Error: {error}")
-
-
-print("1:")
-f1=network.forward(np.array([0, 0]))
-print(f1)
-print("2:")
-f2=network.forward(np.array([1, 0]))
-print(f2)
-print("3:")
-f3=network.forward(np.array([0, 1]))
-print(f3)
-print("4:")
-f4=network.forward(np.array([1, 1]))
-print(f4)
