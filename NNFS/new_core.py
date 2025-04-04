@@ -8,9 +8,9 @@ class Network(object):
         for k in range(1, len(sizes)):
             self.Layers.append(Layer(sizes[k - 1], sizes[k], self.errorfunc, self.activationfunc))
     def forward(self, A):
-        for Layer in self.Layers:
-            A = Layer.forward(A)
-        return A
+        for Layer in self.Layers[:-1]:
+            A = Layer.forward(A, True)
+        return self.Layers[-1].forward(A, False)
     def backward(self, dE_dY, LR):
         for Layer in self.Layers[::-1]:
             dE_dY = Layer.backward(dE_dY, LR)
@@ -26,14 +26,17 @@ class Layer(object):
         self.i = i
         self.W = np.random.randn(i, j) / np.sqrt(i)
         self.B = np.zeros((1, j))
-    def forward(self, X):
+    def forward(self, X, activate):
         #input is of form (1, i)
         #output is of form (i, j)
         if X.ndim == 1:
             X = X.reshape(1, -1)
         self.X = X
         self.Z = X @ self.W + self.B
-        return self.activationfunc.run(self.Z)
+        if activate:
+            return self.activationfunc.run(self.Z)
+        else:
+            return self.Z
     def backward(self, dE_dY, LR):
         #input is of form of layer
         dE_dZ = dE_dY * self.activationfunc.rundev(self.Z)

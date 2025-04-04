@@ -12,7 +12,7 @@ def LogicProblem():
 
     Y = np.array([[0], [1], [1], [0]])
 
-    for epoch in range(0, 5000):
+    for epoch in range(0, 2500):
         x = X[epoch % 4]
         y = Y[epoch % 4]
         output = network.forward(x)
@@ -23,16 +23,16 @@ def LogicProblem():
 
 
     print("1:")
-    f1=network.forward(np.array([0, 0]))
+    f1=np.round(network.forward(np.array([0, 0])))
     print(f1)
     print("2:")
-    f2=network.forward(np.array([0, 1]))
+    f2=np.round(network.forward(np.array([0, 1])))
     print(f2)
     print("3:")
-    f3=network.forward(np.array([1, 0]))
+    f3=np.round(network.forward(np.array([1, 0])))
     print(f3)
     print("4:")
-    f4=network.forward(np.array([1, 1]))
+    f4=np.round(network.forward(np.array([1, 1])))
     print(f4)
 
 LogicProblem()
