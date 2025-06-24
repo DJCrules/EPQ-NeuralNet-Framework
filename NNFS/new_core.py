@@ -1,5 +1,5 @@
 import numpy as np
-   
+
 class Network(object):
     def __init__(self, sizes, error_type, activation_type):
         self.Layers = []
@@ -14,8 +14,8 @@ class Network(object):
     def backward(self, dE_dY, LR):
         for Layer in self.Layers[::-1]:
             dE_dY = Layer.backward(dE_dY, LR)
-    def train_step(self, A, Y, LR):
-        N = self.forward(A)
+    def train_step(self, X, Y, LR):
+        N = self.forward(X)
         self.backward(N - Y, LR)
     
 class Layer(object):
@@ -77,9 +77,17 @@ class ErrorFunction():
     def __init__(self, type):
         if type == "MSE":
             self.type = 0
+        if type == "CCE":
+            self.type = 1
     def run(self, A, Y):
         if self.type == 0:
             return np.mean((A - Y)**2) / 2
+        elif self.type == 1:
+            eps = 1e-12
+            A = np.clip(A, eps, 1 - eps)
+            return -np.sum(Y * np.log(A)) / A.shape[0]
     def rundev(self, A, Y):
         if self.type == 0:
+            return (A - Y)
+        elif self.type == 1:
             return (A - Y)
